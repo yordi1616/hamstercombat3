@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>የኔ Clicker ጌም</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f06, #48f);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 40px 60px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            width: 90%;
+            margin: 20px;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .score-display {
+            font-size: 5em;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.6);
+            animation: bounce 0.8s ease-in-out;
+        }
+        .info-display {
+            font-size: 1.2em;
+            margin-top: -20px;
+            margin-bottom: 20px;
+        }
+        .click-button {
+            padding: 20px 40px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #fff;
+            background-color: #ffcc00;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.1s ease-in-out, background-color 0.3s;
+        }
+        .click-button:active {
+            transform: scale(0.95);
+        }
+        .click-button:hover {
+            background-color: #ffeb3b;
+        }
+        .upgrades-section {
+            margin-top: 40px;
+            text-align: left;
+        }
+        .upgrades-section h2 {
+            font-size: 1.8em;
+            border-bottom: 2px solid white;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .upgrade-item {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .upgrade-info {
+            flex-grow: 1;
+        }
+        .upgrade-info h3 {
+            margin: 0;
+            font-size: 1.2em;
+        }
+        .upgrade-info p {
+            margin: 5px 0 0;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+        .buy-button {
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .buy-button:hover {
+            background-color: #27ae60;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>የ Clicker ጌም</h1>
+        <p>ነጥብ ለመሰብሰብ ተጫን!</p>
+        <div class="score-display" id="score">{{ score }}</div>
+        <div class="info-display">
+            በሰዓት ገቢ: {{ profit_per_hour }}
+        </div>
+        
+        <form action="{{ url_for('click') }}" method="post">
+            <button type="submit" class="click-button">ተጫን!</button>
+        </form>
+        
+        <div class="upgrades-section">
+            <h2>Upgradeዎች</h2>
+            {% for id, upgrade in upgrades.items() %}
+            <div class="upgrade-item">
+                <div class="upgrade-info">
+                    <h3>{{ upgrade.name }}</h3>
+                    <p>ዋጋ: {{ upgrade.cost }} ነጥብ</p>
+                    <p>የሰዓት ገቢ: +{{ upgrade.profit_per_hour }}</p>
+                </div>
+                <form action="{{ url_for('buy_upgrade', upgrade_id=id) }}" method="post">
+                    <button type="submit" class="buy-button">ግዛ</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
